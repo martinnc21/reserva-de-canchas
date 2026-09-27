@@ -1,51 +1,85 @@
-import { canchas } from "./data"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
+import "./App.css"
+import { canchas as canchasBase } from "./data"
 import type { Cancha } from "./types"
-import CanchaCard from "./CanchaCard"
+import CanchaList from "./CanchaList"
+import CanchaDetail from "./CanchaDetail"
+import SearchBar from "./SearchBar"
+
+const obtenerCanchas = () =>
+  new Promise<Cancha[]>((resolve) => {
+    setTimeout(() => {
+      resolve(canchasBase)
+    }, 600)
+  })
 
 function App() {
-    const [ canchaSeleccionada, setCanchaSeleccionada] = 
-    useState<Cancha | null>(null)
+  const [canchas, setCanchas] = useState<Cancha[]>([])
+  const [busqueda, setBusqueda] = useState("")
+  const [canchaSeleccionada, setCanchaSeleccionada] = useState<Cancha | null>(null)
+  const [cargando, setCargando] = useState(true)
+  const [mensajeReserva, setMensajeReserva] = useState("")
 
-    
-    return (
-    <main>
-      <h1>Reserva de Canchas</h1>
+  useEffect(() => {
+    obtenerCanchas().then((datos) => {
+      setCanchas(datos)
+      setCanchaSeleccionada(datos[0] ?? null)
+      setCargando(false)
+    })
+  }, [])
 
-      <section>
-        <h2>Listado de canchas</h2>
+  const canchasFiltradas = useMemo(() => {
+    return canchas.filter((cancha) => {
+      const texto = `${cancha.nombre} ${cancha.deporte}`.toLowerCase()
+      return texto.includes(busqueda.toLowerCase())
+    })
+  }, [canchas, busqueda])
 
-        <div>
-          {canchas.map((cancha) => (
-            <CanchaCard
-              key={cancha.id}
-              cancha={cancha}
-              onSelect={setCanchaSeleccionada}
-            />
-          ))}
+  const canchaVisible =
+    canchaSeleccionada &&
+    canchasFiltradas.some((cancha) => cancha.id === canchaSeleccionada.id)
+      ? canchaSeleccionada
+      : canchasFiltradas[0] ?? null
+
+  const reservarHorario = (horario: string) => {
+    if (!canchaVisible) return
+
+    setMensajeReserva(
+      `Reserva confirmada para ${canchaVisible.nombre} a las ${horario}.`
+    )
+  }
+
+  return (
+    <main className="app-shell">
+      <header className="app-header">
+        <p className="eyebrow">Reserva deportiva</p>
+        <h1>Reserva de Canchas</h1>
+      </header>
+
+      <SearchBar valor={busqueda} onChange={setBusqueda} />
+
+      {cargando ? (
+        <div className="estado">Cargando canchas...</div>
+      ) : canchasFiltradas.length === 0 ? (
+        <div className="estado">No encontramos canchas con esa búsqueda.</div>
+      ) : (
+        <div className="app-grid">
+          <CanchaList
+            canchas={canchasFiltradas}
+            onSelect={setCanchaSeleccionada}
+            selectedId={canchaVisible?.id ?? null}
+          />
+
+          <CanchaDetail
+            cancha={canchaVisible}
+            onReservar={reservarHorario}
+          />
         </div>
-      </section>
+      )}
 
-      {canchaSeleccionada && (
-        <section>
-         <h2>Detalles de la cancha</h2>
-
-         <h3>{canchaSeleccionada.nombre}</h3>
-
-        <p>{canchaSeleccionada.descripcion}</p>
-        <p>Deporte: {canchaSeleccionada.deporte}</p>
-        <p>Superficie: {canchaSeleccionada.superficie}</p>
-        <p>Precio: ${canchaSeleccionada.precioHora} por hora</p>
-
-        <h3>Selecciona un horario</h3>
-
-        {canchaSeleccionada.horariosDisponibles.map((horario) => (
-            <button key={horario}>
-                 Reservar {horario}
-            </button>
-        ))}
-        </section>
-        )}
+      {mensajeReserva && (
+        <div className="reserva-confirmada">{mensajeReserva}</div>
+      )}
     </main>
   )
 }
