@@ -8,3 +8,10 @@ export interface Cancha {
     descripcion: string;
     horariosDisponibles: string[];
 }
+
+export interface Reserva {
+    id: number
+    canchaId: number
+    fecha: string
+    hora: string
+  }

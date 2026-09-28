@@ -9,7 +9,7 @@ export const canchas: Cancha[] = [
         precioHora: 25000,
         imagen: "/canchafutbol1.jpg",
         descripcion: "Cancha de fútbol 7",
-        horariosDisponibles: ["11:00","13:00","17:00"],
+        horariosDisponibles: ["10:00", "11:00", "12:00", "17:00", "18:00", "19:00", "20:00"],
     },
     {
         id: 2,
@@ -19,7 +19,7 @@ export const canchas: Cancha[] = [
         precioHora: 12000,
         imagen: "/canchavoleibol2.jpg",
         descripcion: "Cancha de Voleibol",
-        horariosDisponibles: ["11:00","12:00","13:00","17:00","19:00"],
+        horariosDisponibles: ["10:00", "11:00", "12:00", "17:00", "18:00", "19:00", "20:00"],
     },
     {
         id: 3,
@@ -29,7 +29,7 @@ export const canchas: Cancha[] = [
         precioHora: 15000,
         imagen: "/canchapadel3.jpg",
         descripcion: "Cancha de Pádel",
-        horariosDisponibles: ["18:00","19:00","20:00","21:00"],
+        horariosDisponibles: ["10:00", "11:00", "12:00", "17:00", "18:00", "19:00", "20:00"],
     },
     {
         id: 4,
@@ -39,6 +39,6 @@ export const canchas: Cancha[] = [
         precioHora: 16000,
         imagen: "/canchabasquetbol4.jpg",
         descripcion: "Cancha de Basquetbol",
-        horariosDisponibles: ["15:00","18:00","20:00"],
+        horariosDisponibles: ["10:00", "11:00", "12:00", "17:00", "18:00", "19:00", "20:00"],
     }
 ]
