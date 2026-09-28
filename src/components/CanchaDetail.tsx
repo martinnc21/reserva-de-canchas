@@ -1,4 +1,4 @@
-import type { Cancha } from "./types"
+import type { Cancha } from "../types"
 
 interface CanchaDetailProps {
   cancha: Cancha | null
