@@ -7,6 +7,7 @@ import CanchaDetail from "./components/CanchaDetail"
 import SearchBar from "./components/SearchBar"
 import { horariosLibres } from "./dateUtils"
 import NavBar, { type Vista } from "./components/NavBar"
+import Inicio from "./components/Inicio"
 
 const normalizar = (texto: string) =>
   texto
@@ -86,7 +87,7 @@ function App() {
         cantidadReservas={0}
       />
       {vista === "inicio" && (
-  <div className="estado">Esta es la vista de Inicio.</div>
+  <Inicio onVerCanchas={() => setVista("canchas")} />
 )}
 
 {vista === "canchas" && (

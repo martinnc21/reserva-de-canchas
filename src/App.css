@@ -185,3 +185,58 @@ h1 {
   background: #2563eb;
   color: white;
 }
+.banner {
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: white;
+  border-radius: 16px;
+  padding: 48px 32px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.banner .eyebrow {
+  color: #bbf7d0;
+}
+
+.banner h1 {
+  margin: 8px 0 16px;
+}
+
+.banner-texto {
+  max-width: 480px;
+  margin: 0 auto 24px;
+  opacity: 0.9;
+}
+
+.banner .primary-button {
+  background: white;
+  color: #15803d;
+}
+
+.pasos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.paso {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.paso-numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
