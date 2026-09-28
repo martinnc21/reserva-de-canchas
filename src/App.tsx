@@ -6,6 +6,7 @@ import CanchaList from "./components/CanchaList"
 import CanchaDetail from "./components/CanchaDetail"
 import SearchBar from "./components/SearchBar"
 import { horariosLibres } from "./dateUtils"
+import NavBar, { type Vista } from "./components/NavBar"
 
 const normalizar = (texto: string) =>
   texto
@@ -19,6 +20,7 @@ function App() {
   const [canchaSeleccionada, setCanchaSeleccionada] = useState<Cancha | null>(null)
   const [cargando, setCargando] = useState(true)
   const [mensajeReserva, setMensajeReserva] = useState("")
+  const [vista, setVista] = useState<Vista>("inicio")
 
   useEffect(() => {
     obtenerCanchas().then((datos) => {
@@ -70,13 +72,51 @@ function App() {
     )  
   }
 
+  
+
   return (
     <main className="app-shell">
       <header className="app-header">
         <p className="eyebrow">Reserva deportiva</p>
         <h1>Reserva de Canchas</h1>
       </header>
+      <NavBar
+        vistaActual={vista}
+        onNavegar={setVista}
+        cantidadReservas={0}
+      />
+      {vista === "inicio" && (
+  <div className="estado">Esta es la vista de Inicio.</div>
+)}
 
+{vista === "canchas" && (
+  <>
+    <SearchBar valor={busqueda} onChange={setBusqueda} />
+
+    {cargando ? (
+      <div className="estado">Cargando canchas...</div>
+    ) : canchasFiltradas.length === 0 ? (
+      <div className="estado">No encontramos canchas con esa búsqueda.</div>
+    ) : (
+      <div className="app-grid">
+        <CanchaList
+          canchas={canchasFiltradas}
+          onSelect={setCanchaSeleccionada}
+          selectedId={canchaVisible?.id ?? null}
+        />
+
+        <CanchaDetail
+          cancha={canchaVisible}
+          onReservar={reservarHorario}
+        />
+      </div>
+    )}
+  </>
+)}
+
+{vista === "reservas" && (
+  <div className="estado">Esta es la vista de Reservas (la armamos más adelante).</div>
+)}
       <SearchBar valor={busqueda} onChange={setBusqueda} />
 
       {cargando ? (

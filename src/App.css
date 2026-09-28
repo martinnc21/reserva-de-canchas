@@ -151,3 +151,37 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  margin: -32px -20px 24px;
+}
+
+.nav-logo {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-link {
+  border: none;
+  background: transparent;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #4b5563;
+}
+
+.nav-link.activo {
+  background: #2563eb;
+  color: white;
+}
