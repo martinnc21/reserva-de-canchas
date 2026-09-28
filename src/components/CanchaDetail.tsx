@@ -1,4 +1,5 @@
 import type { Cancha } from "../types"
+import CondicionesReserva from "./CondicionesReserva"
 
 interface CanchaDetailProps {
   cancha: Cancha | null
@@ -46,7 +47,7 @@ function CanchaDetail({ cancha, onReservar }: CanchaDetailProps) {
          ))}
       </div>
       )}
-  
+  <CondicionesReserva cancha={cancha} />
     </aside>
   )
 }

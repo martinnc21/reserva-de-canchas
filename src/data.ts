@@ -10,6 +10,9 @@ export const canchas: Cancha[] = [
         imagen: "/canchafutbol1.jpg",
         descripcion: "Cancha de fútbol 7",
         horariosDisponibles: ["10:00", "11:00", "12:00", "17:00", "18:00"],
+        horarioAtencion: "Lunes a domingo de 10:00 a 22:00 hrs",
+        direccion: "Av. Alemania 0450, Temuco",
+        prestaciones: ["Estacionamiento", "Camarines"],
     },
     {
         id: 2,
@@ -20,6 +23,9 @@ export const canchas: Cancha[] = [
         imagen: "/canchavoleibol2.jpg",
         descripcion: "Cancha de Voleibol",
         horariosDisponibles: ["10:00", "11:00", "12:00", "17:00", "18:00", "19:00", "20:00"],
+        horarioAtencion: "Lunes a domingo de 10:00 a 22:00 hrs",
+        direccion: "Av. Alemania 0450, Temuco",
+        prestaciones: ["Estacionamiento", "Camarines"],
     },
     {
         id: 3,
@@ -30,6 +36,9 @@ export const canchas: Cancha[] = [
         imagen: "/canchapadel3.jpg",
         descripcion: "Cancha de Pádel",
         horariosDisponibles: ["10:00", "11:00", "12:00", "17:00", "18:00", "19:00"],
+        horarioAtencion: "Lunes a domingo de 10:00 a 22:00 hrs",
+        direccion: "Av. Alemania 0450, Temuco",
+        prestaciones: ["Estacionamiento", "Camarines", "Cafetería"],
     },
     {
         id: 4,
@@ -40,5 +49,8 @@ export const canchas: Cancha[] = [
         imagen: "/canchabasquetbol4.jpg",
         descripcion: "Cancha de Basquetbol",
         horariosDisponibles: ["10:00", "11:00", "12:00", "17:00", "18:00", "19:00"],
+        horarioAtencion: "Lunes a domingo de 10:00 a 22:00 hrs",
+        direccion: "Av. Alemania 0450, Temuco",
+        prestaciones: ["Estacionamiento", "Camarines"],
     }
 ]
