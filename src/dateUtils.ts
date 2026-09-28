@@ -1,3 +1,5 @@
+import type { Cancha, Reserva } from "./types"
+
 export const hoyISO = () => {
     const hoy = new Date()
     const año = hoy.getFullYear()
@@ -19,3 +21,16 @@ export const hoyISO = () => {
     fecha.setHours(0, 0, 0, 0)
     return fecha < hoy
   }
+
+  export const horariosLibres = (
+    cancha: Cancha,
+    fecha: string,
+    reservas: Reserva[]
+  ) => {
+    const ocupados = reservas
+      .filter((r) => r.canchaId === cancha.id && r.fecha === fecha)
+      .map((r) => r.hora)
+  
+    return cancha.horariosDisponibles.filter((hora) => !ocupados.includes(hora))
+  }
+  

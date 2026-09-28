@@ -5,6 +5,7 @@ import type { Cancha } from "./types"
 import CanchaList from "./components/CanchaList"
 import CanchaDetail from "./components/CanchaDetail"
 import SearchBar from "./components/SearchBar"
+import { horariosLibres } from "./dateUtils"
 
 const normalizar = (texto: string) =>
   texto
@@ -66,7 +67,7 @@ function App() {
 
     setMensajeReserva(
       `Reserva confirmada para ${canchaVisible.nombre} a las ${horario}.`
-    )
+    )  
   }
 
   return (
