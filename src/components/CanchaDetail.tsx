@@ -4,9 +4,10 @@ import CondicionesReserva from "./CondicionesReserva"
 interface CanchaDetailProps {
   cancha: Cancha | null
   onReservar: (horario: string) => void
+  onVolver: () => void
 }
 
-function CanchaDetail({ cancha, onReservar }: CanchaDetailProps) {
+function CanchaDetail({ cancha, onReservar, onVolver }: CanchaDetailProps) {
   if (!cancha) {
     return (
       <aside className="detalle-panel">
@@ -17,6 +18,10 @@ function CanchaDetail({ cancha, onReservar }: CanchaDetailProps) {
 
   return (
     <aside className="detalle-panel">
+      <button className="volver-button" onClick={onVolver}>
+        ← Volver a canchas
+      </button>
+
       <img src={cancha.imagen} alt={cancha.nombre} className="detalle-image" />
 
       <h2>{cancha.nombre}</h2>
@@ -35,7 +40,7 @@ function CanchaDetail({ cancha, onReservar }: CanchaDetailProps) {
       {cancha.horariosDisponibles.length === 0 ? (
         <p>No quedan horarios disponibles para esta cancha.</p>
       ) : (
-         <div className="horarios">
+        <div className="horarios">
           {cancha.horariosDisponibles.map((horario) => (
             <button
               key={horario}
@@ -44,10 +49,11 @@ function CanchaDetail({ cancha, onReservar }: CanchaDetailProps) {
             >
               {horario}
             </button>
-         ))}
-      </div>
+          ))}
+        </div>
       )}
-  <CondicionesReserva cancha={cancha} />
+
+      <CondicionesReserva cancha={cancha} />
     </aside>
   )
 }

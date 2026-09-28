@@ -43,13 +43,6 @@ h1 {
   font-size: 1rem;
 }
 
-.app-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 24px;
-  align-items: start;
-}
-
 .list-section,
 .detalle-panel {
   background: white;
@@ -146,11 +139,6 @@ h1 {
   color: #065f46;
 }
 
-@media (max-width: 768px) {
-  .app-grid {
-    grid-template-columns: 1fr;
-  }
-}
 .nav-bar {
   display: flex;
   justify-content: space-between;
@@ -263,4 +251,13 @@ h1 {
   padding: 12px 14px;
   font-size: 0.9rem;
   color: #713f12;
+}
+.volver-button {
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 16px;
 }

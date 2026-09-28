@@ -5,7 +5,6 @@ import type { Cancha } from "./types"
 import CanchaList from "./components/CanchaList"
 import CanchaDetail from "./components/CanchaDetail"
 import SearchBar from "./components/SearchBar"
-import { horariosLibres } from "./dateUtils"
 import NavBar, { type Vista } from "./components/NavBar"
 import Inicio from "./components/Inicio"
 
@@ -26,7 +25,6 @@ function App() {
   useEffect(() => {
     obtenerCanchas().then((datos) => {
       setCanchas(datos)
-      setCanchaSeleccionada(datos[0] ?? null)
       setCargando(false)
     })
   }, [])
@@ -38,42 +36,31 @@ function App() {
     })
   }, [canchas, busqueda])
 
-  const canchaVisible =
-    canchaSeleccionada &&
-    canchasFiltradas.some((cancha) => cancha.id === canchaSeleccionada.id)
-      ? canchaSeleccionada
-      : canchasFiltradas[0] ?? null
-
   const reservarHorario = (horario: string) => {
-    if (!canchaVisible) return
+    if (!canchaSeleccionada) return
 
-  const horariosRestantes = canchaVisible.horariosDisponibles.filter(
-    (hora) => hora !== horario
-  )
-
-  if (horariosRestantes.length == canchaVisible.horariosDisponibles.length) return
-
-  setCanchas((actuales) =>
-    actuales.map((cancha) =>
-      cancha.id === canchaVisible.id
-        ? {... cancha, horariosDisponibles: horariosRestantes}
-        : cancha
+    const horariosRestantes = canchaSeleccionada.horariosDisponibles.filter(
+      (hora) => hora !== horario
     )
-  )
 
-  setCanchaSeleccionada((actual) =>
-    actual?.id === canchaVisible.id
-      ?{...actual, horariosDisponibles: horariosRestantes}
-      :actual
-  )
+    if (horariosRestantes.length === canchaSeleccionada.horariosDisponibles.length) return
 
+    setCanchas((actuales) =>
+      actuales.map((cancha) =>
+        cancha.id === canchaSeleccionada.id
+          ? { ...cancha, horariosDisponibles: horariosRestantes }
+          : cancha
+      )
+    )
+
+    setCanchaSeleccionada((actual) =>
+      actual ? { ...actual, horariosDisponibles: horariosRestantes } : actual
+    )
 
     setMensajeReserva(
-      `Reserva confirmada para ${canchaVisible.nombre} a las ${horario}.`
-    )  
+      `Reserva confirmada para ${canchaSeleccionada.nombre} a las ${horario}.`
+    )
   }
-
-  
 
   return (
     <main className="app-shell">
@@ -81,67 +68,40 @@ function App() {
         <p className="eyebrow">Reserva deportiva</p>
         <h1>Reserva de Canchas</h1>
       </header>
-      <NavBar
-        vistaActual={vista}
-        onNavegar={setVista}
-        cantidadReservas={0}
-      />
-      {vista === "inicio" && (
-  <Inicio onVerCanchas={() => setVista("canchas")} />
-)}
 
-{vista === "canchas" && (
-  <>
-    <SearchBar valor={busqueda} onChange={setBusqueda} />
+      <NavBar vistaActual={vista} onNavegar={setVista} cantidadReservas={0} />
 
-    {cargando ? (
-      <div className="estado">Cargando canchas...</div>
-    ) : canchasFiltradas.length === 0 ? (
-      <div className="estado">No encontramos canchas con esa búsqueda.</div>
-    ) : (
-      <div className="app-grid">
-        <CanchaList
-          canchas={canchasFiltradas}
-          onSelect={setCanchaSeleccionada}
-          selectedId={canchaVisible?.id ?? null}
-        />
+      {vista === "inicio" && <Inicio onVerCanchas={() => setVista("canchas")} />}
 
-        <CanchaDetail
-          cancha={canchaVisible}
-          onReservar={reservarHorario}
-        />
-      </div>
-    )}
-  </>
-)}
+      {vista === "canchas" && (
+        <>
+          {canchaSeleccionada ? (
+            <CanchaDetail
+              cancha={canchaSeleccionada}
+              onReservar={reservarHorario}
+              onVolver={() => setCanchaSeleccionada(null)}
+            />
+          ) : (
+            <>
+              <SearchBar valor={busqueda} onChange={setBusqueda} />
 
-{vista === "reservas" && (
-  <div className="estado">Esta es la vista de Reservas (la armamos más adelante).</div>
-)}
-      <SearchBar valor={busqueda} onChange={setBusqueda} />
-
-      {cargando ? (
-        <div className="estado">Cargando canchas...</div>
-      ) : canchasFiltradas.length === 0 ? (
-        <div className="estado">No encontramos canchas con esa búsqueda.</div>
-      ) : (
-        <div className="app-grid">
-          <CanchaList
-            canchas={canchasFiltradas}
-            onSelect={setCanchaSeleccionada}
-            selectedId={canchaVisible?.id ?? null}
-          />
-
-          <CanchaDetail
-            cancha={canchaVisible}
-            onReservar={reservarHorario}
-          />
-        </div>
+              {cargando ? (
+                <div className="estado">Cargando canchas...</div>
+              ) : canchasFiltradas.length === 0 ? (
+                <div className="estado">No encontramos canchas con esa búsqueda.</div>
+              ) : (
+                <CanchaList canchas={canchasFiltradas} onSelect={setCanchaSeleccionada} />
+              )}
+            </>
+          )}
+        </>
       )}
 
-      {mensajeReserva && (
-        <div className="reserva-confirmada">{mensajeReserva}</div>
+      {vista === "reservas" && (
+        <div className="estado">Esta es la vista de Reservas (la armamos más adelante).</div>
       )}
+
+      {mensajeReserva && <div className="reserva-confirmada">{mensajeReserva}</div>}
     </main>
   )
 }

@@ -3,12 +3,11 @@ import type { Cancha } from "../types"
 interface CanchaCardProps {
   cancha: Cancha
   onSelect: (cancha: Cancha) => void
-  selected: boolean
 }
 
-function CanchaCard({ cancha, onSelect, selected }: CanchaCardProps) {
+function CanchaCard({ cancha, onSelect }: CanchaCardProps) {
   return (
-    <article className={`cancha-card ${selected ? "selected" : ""}`}>
+    <article className="cancha-card">
       <img className="cancha-image" src={cancha.imagen} alt={cancha.nombre} />
 
       <div className="cancha-body">
