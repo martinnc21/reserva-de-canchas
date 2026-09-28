@@ -44,6 +44,27 @@ function App() {
   const reservarHorario = (horario: string) => {
     if (!canchaVisible) return
 
+  const horariosRestantes = canchaVisible.horariosDisponibles.filter(
+    (hora) => hora !== horario
+  )
+
+  if (horariosRestantes.length == canchaVisible.horariosDisponibles.length) return
+
+  setCanchas((actuales) =>
+    actuales.map((cancha) =>
+      cancha.id === canchaVisible.id
+        ? {... cancha, horariosDisponibles: horariosRestantes}
+        : cancha
+    )
+  )
+
+  setCanchaSeleccionada((actual) =>
+    actual?.id === canchaVisible.id
+      ?{...actual, horariosDisponibles: horariosRestantes}
+      :actual
+  )
+
+
     setMensajeReserva(
       `Reserva confirmada para ${canchaVisible.nombre} a las ${horario}.`
     )

@@ -31,18 +31,22 @@ function CanchaDetail({ cancha, onReservar }: CanchaDetailProps) {
       </p>
 
       <h3>Horarios disponibles</h3>
-
-      <div className="horarios">
-        {cancha.horariosDisponibles.map((horario) => (
-          <button
-            key={horario}
-            className="horario-button"
-            onClick={() => onReservar(horario)}
-          >
-            {horario}
-          </button>
-        ))}
+      {cancha.horariosDisponibles.length === 0 ? (
+        <p>No quedan horarios disponibles para esta cancha.</p>
+      ) : (
+         <div className="horarios">
+          {cancha.horariosDisponibles.map((horario) => (
+            <button
+              key={horario}
+              className="horario-button"
+              onClick={() => onReservar(horario)}
+            >
+              {horario}
+            </button>
+         ))}
       </div>
+      )}
+  
     </aside>
   )
 }
