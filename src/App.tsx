@@ -1,17 +1,11 @@
 import { useEffect, useMemo, useState } from "react"
 import "./App.css"
-import { canchas as canchasBase } from "./data"
+import { obtenerCanchas } from "./services/canchasService"
 import type { Cancha } from "./types"
 import CanchaList from "./components/CanchaList"
 import CanchaDetail from "./components/CanchaDetail"
 import SearchBar from "./components/SearchBar"
 
-const obtenerCanchas = () =>
-  new Promise<Cancha[]>((resolve) => {
-    setTimeout(() => {
-      resolve(canchasBase)
-    }, 600)
-  })
 
 function App() {
   const [canchas, setCanchas] = useState<Cancha[]>([])
