@@ -6,6 +6,11 @@ import CanchaList from "./components/CanchaList"
 import CanchaDetail from "./components/CanchaDetail"
 import SearchBar from "./components/SearchBar"
 
+const normalizar = (texto: string) =>
+  texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
 
 function App() {
   const [canchas, setCanchas] = useState<Cancha[]>([])
@@ -24,8 +29,8 @@ function App() {
 
   const canchasFiltradas = useMemo(() => {
     return canchas.filter((cancha) => {
-      const texto = `${cancha.nombre} ${cancha.deporte}`.toLowerCase()
-      return texto.includes(busqueda.toLowerCase())
+      const texto = normalizar(`${cancha.nombre} ${cancha.deporte}`)
+      return texto.includes(normalizar(busqueda))
     })
   }, [canchas, busqueda])
 
