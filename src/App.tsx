@@ -36,6 +36,17 @@ function App() {
     })
   }, [canchas, busqueda])
 
+  const agregarReserva = (canchaId: number, fecha: string, hora: string) => {
+    const nuevaReserva: Reserva = {
+      id: Date.now(),
+      canchaId,
+      fecha,
+      hora,
+    }
+  
+    setReservas((actuales) => [...actuales, nuevaReserva])
+  }
+
   return (
     <main className="app-shell">
       <header className="app-header">
@@ -53,6 +64,7 @@ function App() {
             <CanchaDetail
               cancha={canchaSeleccionada}
               reservas={reservas}
+              onAgregar={agregarReserva}
               onVolver={() => setCanchaSeleccionada(null)}
             />
           ) : (

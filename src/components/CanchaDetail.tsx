@@ -7,12 +7,14 @@ import CondicionesReserva from "./CondicionesReserva"
 interface CanchaDetailProps {
   cancha: Cancha | null
   reservas: Reserva[]
+  onAgregar: (canchaId: number, fecha: string, hora: string) => void
   onVolver: () => void
 }
 
-function CanchaDetail({ cancha, reservas, onVolver }: CanchaDetailProps) {
+function CanchaDetail({ cancha, reservas, onAgregar, onVolver }: CanchaDetailProps) {
   const [fechaSeleccionada, setFechaSeleccionada] = useState<string | null>(null)
   const [horaSeleccionada, setHoraSeleccionada] = useState<string | null>(null)
+  const [mensaje, setMensaje] = useState<string | null>(null)
 
   if (!cancha) {
     return (
@@ -29,8 +31,18 @@ function CanchaDetail({ cancha, reservas, onVolver }: CanchaDetailProps) {
   const elegirFecha = (fecha: string) => {
     setFechaSeleccionada(fecha)
     setHoraSeleccionada(null)
+    setMensaje(null)
   }
 
+  const confirmarReserva = () => {
+    if (!fechaSeleccionada || !horaSeleccionada) return
+
+    onAgregar(cancha.id, fechaSeleccionada, horaSeleccionada)
+    setMensaje(`Añadiste ${cancha.nombre} para el ${fechaSeleccionada} a las ${horaSeleccionada}.`)
+    setFechaSeleccionada(null)
+    setHoraSeleccionada(null)
+  }
+  
   return (
     <aside className="detalle-panel">
       <button className="volver-button" onClick={onVolver}>
@@ -95,13 +107,15 @@ function CanchaDetail({ cancha, reservas, onVolver }: CanchaDetailProps) {
               <p>
                 <strong>Precio:</strong> ${cancha.precioHora}
               </p>
-              <button className="primary-button" disabled>
-                Añadir cancha (próximo commit)
+              <button className="primary-button" onClick={confirmarReserva}>
+               Añadir cancha
               </button>
             </div>
           )}
         </div>
       </div>
+
+      {mensaje && <div className="reserva-confirmada">{mensaje}</div>}
 
       <CondicionesReserva cancha={cancha} />
     </aside>
