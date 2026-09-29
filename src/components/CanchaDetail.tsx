@@ -1,22 +1,34 @@
-import type { Cancha } from "../types"
-import CondicionesReserva from "./CondicionesReserva"
 import { useState } from "react"
+import type { Cancha, Reserva } from "../types"
+import { horariosLibres } from "../dateUtils"
 import Calendario from "./Calendario"
+import CondicionesReserva from "./CondicionesReserva"
 
 interface CanchaDetailProps {
   cancha: Cancha | null
-  onReservar: (horario: string) => void
+  reservas: Reserva[]
   onVolver: () => void
 }
 
-function CanchaDetail({ cancha, onReservar, onVolver }: CanchaDetailProps) {
+function CanchaDetail({ cancha, reservas, onVolver }: CanchaDetailProps) {
   const [fechaSeleccionada, setFechaSeleccionada] = useState<string | null>(null)
+  const [horaSeleccionada, setHoraSeleccionada] = useState<string | null>(null)
+
   if (!cancha) {
     return (
       <aside className="detalle-panel">
         Selecciona una cancha para ver el detalle.
       </aside>
     )
+  }
+
+  const horarios = fechaSeleccionada
+    ? horariosLibres(cancha, fechaSeleccionada, reservas)
+    : []
+
+  const elegirFecha = (fecha: string) => {
+    setFechaSeleccionada(fecha)
+    setHoraSeleccionada(null)
   }
 
   return (
@@ -38,25 +50,58 @@ function CanchaDetail({ cancha, onReservar, onVolver }: CanchaDetailProps) {
       <p>
         <strong>Precio:</strong> ${cancha.precioHora} por hora
       </p>
-      <h3>Selecciona una fecha</h3>
-      <Calendario fechaSeleccionada={fechaSeleccionada} onSeleccionar={setFechaSeleccionada} />
-      {fechaSeleccionada && <p>Elegiste: {fechaSeleccionada}</p>}
-      <h4>Horarios disponibles</h4>
-      {cancha.horariosDisponibles.length === 0 ? (
-        <p>No quedan horarios disponibles para esta cancha.</p>
-      ) : (
-        <div className="horarios">
-          {cancha.horariosDisponibles.map((horario) => (
-            <button
-              key={horario}
-              className="horario-button"
-              onClick={() => onReservar(horario)}
-            >
-              {horario}
-            </button>
-          ))}
+
+      <h3>Reservar tu cancha</h3>
+
+      <div className="reserva-pasos">
+        <div className="paso-reserva">
+          <p className="paso-reserva-titulo">1. Selecciona una fecha</p>
+          <Calendario fechaSeleccionada={fechaSeleccionada} onSeleccionar={elegirFecha} />
         </div>
-      )}
+
+        <div className="paso-reserva">
+          <p className="paso-reserva-titulo">2. Elige un horario</p>
+          {!fechaSeleccionada ? (
+            <p className="paso-reserva-vacio">Esperando fecha...</p>
+          ) : horarios.length === 0 ? (
+            <p className="paso-reserva-vacio">No quedan horarios para este día.</p>
+          ) : (
+            <div className="horarios">
+              {horarios.map((hora) => (
+                <button
+                  key={hora}
+                  className={`horario-button ${horaSeleccionada === hora ? "seleccionado" : ""}`}
+                  onClick={() => setHoraSeleccionada(hora)}
+                >
+                  {hora}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="paso-reserva">
+          <p className="paso-reserva-titulo">3. Confirma</p>
+          {!horaSeleccionada ? (
+            <p className="paso-reserva-vacio">Esperando horario...</p>
+          ) : (
+            <div className="resumen-reserva">
+              <p>
+                <strong>Fecha:</strong> {fechaSeleccionada}
+              </p>
+              <p>
+                <strong>Hora:</strong> {horaSeleccionada}
+              </p>
+              <p>
+                <strong>Precio:</strong> ${cancha.precioHora}
+              </p>
+              <button className="primary-button" disabled>
+                Añadir cancha (próximo commit)
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
 
       <CondicionesReserva cancha={cancha} />
     </aside>

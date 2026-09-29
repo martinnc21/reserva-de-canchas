@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import "./App.css"
 import { obtenerCanchas } from "./services/canchasService"
-import type { Cancha } from "./types"
+import type { Cancha, Reserva } from "./types"
 import CanchaList from "./components/CanchaList"
 import CanchaDetail from "./components/CanchaDetail"
 import SearchBar from "./components/SearchBar"
@@ -19,8 +19,8 @@ function App() {
   const [busqueda, setBusqueda] = useState("")
   const [canchaSeleccionada, setCanchaSeleccionada] = useState<Cancha | null>(null)
   const [cargando, setCargando] = useState(true)
-  const [mensajeReserva, setMensajeReserva] = useState("")
   const [vista, setVista] = useState<Vista>("inicio")
+  const [reservas, setReservas] = useState<Reserva[]>([])
 
   useEffect(() => {
     obtenerCanchas().then((datos) => {
@@ -36,32 +36,6 @@ function App() {
     })
   }, [canchas, busqueda])
 
-  const reservarHorario = (horario: string) => {
-    if (!canchaSeleccionada) return
-
-    const horariosRestantes = canchaSeleccionada.horariosDisponibles.filter(
-      (hora) => hora !== horario
-    )
-
-    if (horariosRestantes.length === canchaSeleccionada.horariosDisponibles.length) return
-
-    setCanchas((actuales) =>
-      actuales.map((cancha) =>
-        cancha.id === canchaSeleccionada.id
-          ? { ...cancha, horariosDisponibles: horariosRestantes }
-          : cancha
-      )
-    )
-
-    setCanchaSeleccionada((actual) =>
-      actual ? { ...actual, horariosDisponibles: horariosRestantes } : actual
-    )
-
-    setMensajeReserva(
-      `Reserva confirmada para ${canchaSeleccionada.nombre} a las ${horario}.`
-    )
-  }
-
   return (
     <main className="app-shell">
       <header className="app-header">
@@ -69,7 +43,7 @@ function App() {
         <h1>Reserva de Canchas</h1>
       </header>
 
-      <NavBar vistaActual={vista} onNavegar={setVista} cantidadReservas={0} />
+      <NavBar vistaActual={vista} onNavegar={setVista} cantidadReservas={reservas.length} />
 
       {vista === "inicio" && <Inicio onVerCanchas={() => setVista("canchas")} />}
 
@@ -78,7 +52,7 @@ function App() {
           {canchaSeleccionada ? (
             <CanchaDetail
               cancha={canchaSeleccionada}
-              onReservar={reservarHorario}
+              reservas={reservas}
               onVolver={() => setCanchaSeleccionada(null)}
             />
           ) : (
@@ -100,8 +74,6 @@ function App() {
       {vista === "reservas" && (
         <div className="estado">Esta es la vista de Reservas (la armamos más adelante).</div>
       )}
-
-      {mensajeReserva && <div className="reserva-confirmada">{mensajeReserva}</div>}
     </main>
   )
 }
