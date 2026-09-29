@@ -33,4 +33,19 @@ export const hoyISO = () => {
   
     return cancha.horariosDisponibles.filter((hora) => !ocupados.includes(hora))
   }
+  export const diasDelMes = (fecha: Date): Date[] => {
+    const año = fecha.getFullYear()
+    const mes = fecha.getMonth()
+    const ultimoDia = new Date(año, mes + 1, 0).getDate()
   
+    const dias: Date[] = []
+    for (let dia = 1; dia <= ultimoDia; dia++) {
+      dias.push(new Date(año, mes, dia))
+    }
+    return dias
+  }
+  
+  export const diaSemanaLunes = (fecha: Date): number => {
+    const dia = fecha.getDay()
+    return dia === 0 ? 6 : dia - 1
+  }

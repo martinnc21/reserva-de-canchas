@@ -1,5 +1,7 @@
 import type { Cancha } from "../types"
 import CondicionesReserva from "./CondicionesReserva"
+import { useState } from "react"
+import Calendario from "./Calendario"
 
 interface CanchaDetailProps {
   cancha: Cancha | null
@@ -8,6 +10,7 @@ interface CanchaDetailProps {
 }
 
 function CanchaDetail({ cancha, onReservar, onVolver }: CanchaDetailProps) {
+  const [fechaSeleccionada, setFechaSeleccionada] = useState<string | null>(null)
   if (!cancha) {
     return (
       <aside className="detalle-panel">
@@ -35,8 +38,10 @@ function CanchaDetail({ cancha, onReservar, onVolver }: CanchaDetailProps) {
       <p>
         <strong>Precio:</strong> ${cancha.precioHora} por hora
       </p>
-
-      <h3>Horarios disponibles</h3>
+      <h3>Selecciona una fecha</h3>
+      <Calendario fechaSeleccionada={fechaSeleccionada} onSeleccionar={setFechaSeleccionada} />
+      {fechaSeleccionada && <p>Elegiste: {fechaSeleccionada}</p>}
+      <h4>Horarios disponibles</h4>
       {cancha.horariosDisponibles.length === 0 ? (
         <p>No quedan horarios disponibles para esta cancha.</p>
       ) : (
