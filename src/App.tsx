@@ -7,6 +7,7 @@ import CanchaDetail from "./components/CanchaDetail"
 import SearchBar from "./components/SearchBar"
 import NavBar, { type Vista } from "./components/NavBar"
 import Inicio from "./components/Inicio"
+import Reservas from "./components/Reservas"
 
 const normalizar = (texto: string) =>
   texto
@@ -21,6 +22,7 @@ function App() {
   const [cargando, setCargando] = useState(true)
   const [vista, setVista] = useState<Vista>("inicio")
   const [reservas, setReservas] = useState<Reserva[]>([])
+  const [pagoConfirmado, setPagoConfirmado] = useState(false)
 
   useEffect(() => {
     obtenerCanchas().then((datos) => {
@@ -45,6 +47,15 @@ function App() {
     }
   
     setReservas((actuales) => [...actuales, nuevaReserva])
+  }
+
+  const eliminarReserva = (id: number) => {
+    setReservas((actuales) => actuales.filter((reserva) => reserva.id !== id))
+  }
+
+  const pagarReservas = () => {
+    setReservas([])
+    setPagoConfirmado(true)
   }
 
   return (
@@ -84,8 +95,18 @@ function App() {
       )}
 
       {vista === "reservas" && (
-        <div className="estado">Esta es la vista de Reservas (la armamos más adelante).</div>
-      )}
+              <Reservas
+                reservas={reservas}
+                canchas={canchas}
+                pagoConfirmado={pagoConfirmado}
+                onEliminar={eliminarReserva}
+                onPagar={pagarReservas}
+                onSeguirReservando={() => {
+                  setPagoConfirmado(false)
+                  setVista("canchas")
+                }}
+              />
+            )}
     </main>
   )
 }
