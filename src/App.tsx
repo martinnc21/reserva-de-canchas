@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import "./App.css"
-import { obtenerCanchas } from "./services/canchasService"
+import { obtenerCanchas, obtenerReservas, guardarReservas } from "./services/canchasService"
 import type { Cancha, Reserva } from "./types"
 import CanchaList from "./components/CanchaList"
 import CanchaDetail from "./components/CanchaDetail"
@@ -21,7 +21,7 @@ function App() {
   const [canchaSeleccionada, setCanchaSeleccionada] = useState<Cancha | null>(null)
   const [cargando, setCargando] = useState(true)
   const [vista, setVista] = useState<Vista>("inicio")
-  const [reservas, setReservas] = useState<Reserva[]>([])
+  const [reservas, setReservas] = useState<Reserva[]>(() => obtenerReservas())
   const [pagoConfirmado, setPagoConfirmado] = useState(false)
 
   useEffect(() => {
@@ -30,6 +30,10 @@ function App() {
       setCargando(false)
     })
   }, [])
+
+  useEffect(() => {
+    guardarReservas(reservas)
+  }, [reservas])
 
   const canchasFiltradas = useMemo(() => {
     return canchas.filter((cancha) => {
