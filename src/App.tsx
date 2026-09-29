@@ -21,7 +21,8 @@ function App() {
   const [canchaSeleccionada, setCanchaSeleccionada] = useState<Cancha | null>(null)
   const [cargando, setCargando] = useState(true)
   const [vista, setVista] = useState<Vista>("inicio")
-  const [reservas, setReservas] = useState<Reserva[]>(() => obtenerReservas())
+  const [carrito, setCarrito] = useState<Reserva[]>([])
+  const [reservasConfirmadas, setReservasConfirmadas] = useState<Reserva[]>(() => obtenerReservas())
   const [pagoConfirmado, setPagoConfirmado] = useState(false)
 
   useEffect(() => {
@@ -32,8 +33,8 @@ function App() {
   }, [])
 
   useEffect(() => {
-    guardarReservas(reservas)
-  }, [reservas])
+    guardarReservas(reservasConfirmadas)
+  }, [reservasConfirmadas])
 
   const canchasFiltradas = useMemo(() => {
     return canchas.filter((cancha) => {
@@ -50,15 +51,16 @@ function App() {
       hora,
     }
   
-    setReservas((actuales) => [...actuales, nuevaReserva])
+    setCarrito((actuales) => [...actuales, nuevaReserva])
   }
 
   const eliminarReserva = (id: number) => {
-    setReservas((actuales) => actuales.filter((reserva) => reserva.id !== id))
+    setCarrito((actuales) => actuales.filter((reserva) => reserva.id !== id))
   }
 
   const pagarReservas = () => {
-    setReservas([])
+    setReservasConfirmadas((actuales) => [...actuales, ...carrito])
+    setCarrito([])
     setPagoConfirmado(true)
   }
 
@@ -69,7 +71,7 @@ function App() {
         <h1>Reserva de Canchas</h1>
       </header>
 
-      <NavBar vistaActual={vista} onNavegar={setVista} cantidadReservas={reservas.length} />
+      <NavBar vistaActual={vista} onNavegar={setVista} cantidadReservas={carrito.length} />
 
       {vista === "inicio" && <Inicio onVerCanchas={() => setVista("canchas")} />}
 
@@ -77,11 +79,11 @@ function App() {
         <>
           {canchaSeleccionada ? (
             <CanchaDetail
-              cancha={canchaSeleccionada}
-              reservas={reservas}
-              onAgregar={agregarReserva}
-              onVolver={() => setCanchaSeleccionada(null)}
-            />
+            cancha={canchaSeleccionada}
+            reservas={[...reservasConfirmadas, ...carrito]}
+            onAgregar={agregarReserva}
+            onVolver={() => setCanchaSeleccionada(null)}
+          />
           ) : (
             <>
               <SearchBar valor={busqueda} onChange={setBusqueda} />
@@ -99,17 +101,17 @@ function App() {
       )}
 
       {vista === "reservas" && (
-              <Reservas
-                reservas={reservas}
-                canchas={canchas}
-                pagoConfirmado={pagoConfirmado}
-                onEliminar={eliminarReserva}
-                onPagar={pagarReservas}
-                onSeguirReservando={() => {
-                  setPagoConfirmado(false)
-                  setVista("canchas")
-                }}
-              />
+        <Reservas
+        reservas={carrito}
+        canchas={canchas}
+        pagoConfirmado={pagoConfirmado}
+        onEliminar={eliminarReserva}
+        onPagar={pagarReservas}
+        onSeguirReservando={() => {
+          setPagoConfirmado(false)
+          setVista("canchas")
+        }}
+      />
             )}
     </main>
   )
