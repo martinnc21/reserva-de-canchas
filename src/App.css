@@ -309,3 +309,24 @@ h1 {
   cursor: not-allowed;
   background: #f9fafb;
 }
+.calendario-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.calendario-flecha {
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+  color: #2563eb;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.calendario-flecha:disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+}
