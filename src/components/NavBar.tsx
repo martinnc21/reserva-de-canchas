@@ -21,10 +21,7 @@ function NavBar({ vistaActual, onInicio, onCanchas, onReservas, cantidadReservas
       </span>
 
       <div className="nav-links">
-        <button
-          className={vistaActual === "principal" ? "nav-link activo" : "nav-link"}
-          onClick={onInicio}
-        >
+        <button className="nav-link" onClick={onInicio}>
           Inicio
         </button>
 
