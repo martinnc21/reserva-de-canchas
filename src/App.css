@@ -224,9 +224,14 @@ h1 {
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-weight: 700;
   color: #1f2937;
+  font-size: 1.15rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
 }
 
 .nav-links {

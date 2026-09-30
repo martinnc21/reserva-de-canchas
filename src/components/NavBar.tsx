@@ -11,14 +11,14 @@ interface NavBarProps {
 function NavBar({ vistaActual, onInicio, onCanchas, onReservas, cantidadReservas }: NavBarProps) {
   return (
     <nav className="nav-bar">
-      <span className="nav-logo">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <button className="nav-logo" onClick={onInicio}>
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="2" y="4" width="20" height="16" rx="2" stroke="#16a34a" strokeWidth="2" />
           <line x1="12" y1="4" x2="12" y2="20" stroke="#16a34a" strokeWidth="2" />
           <circle cx="12" cy="12" r="3" stroke="#16a34a" strokeWidth="2" />
         </svg>
         Reserva de Canchas
-      </span>
+      </button>
 
       <div className="nav-links">
         <button className="nav-link" onClick={onInicio}>
