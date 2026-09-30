@@ -35,4 +35,4 @@ npm run build
 
 ## Despliegue
 
-Aplicación publicada en Vercel: link aca
+Aplicación publicada en Vercel: https://reserva-de-canchas-five.vercel.app/
