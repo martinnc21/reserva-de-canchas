@@ -54,7 +54,6 @@ function CanchaDetail({ cancha, reservas, onAgregar, onVolver }: CanchaDetailPro
           src={cancha.imagenBanner}
           alt={cancha.nombre}
           className="detalle-image"
-          style={{ objectPosition: cancha.posicionBanner }}
         />
         <div className="detalle-hero-texto">
           <h2>{cancha.nombre}</h2>
