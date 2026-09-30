@@ -5,6 +5,7 @@ export interface Cancha {
     superficie: string
     precioHora: number
     imagen: string
+    imagenBanner: string
     descripcion: string
     horariosDisponibles: string[]
     horarioAtencion: string

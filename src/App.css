@@ -78,12 +78,52 @@ h1 {
   transform: translateY(-2px);
 }
 
-.cancha-image,
-.detalle-image {
+.cancha-image {
   width: 100%;
   height: 180px;
   object-fit: cover;
   display: block;
+}
+
+.detalle-hero {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.detalle-image {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.detalle-hero-texto {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  color: white;
+}
+
+.detalle-hero-texto h2 {
+  margin: 0 0 6px;
+}
+
+.detalle-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.detalle-descripcion {
+  color: #4b5563;
 }
 
 .cancha-body {

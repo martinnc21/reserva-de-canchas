@@ -49,10 +49,15 @@ function CanchaDetail({ cancha, reservas, onAgregar, onVolver }: CanchaDetailPro
         ← Volver a canchas
       </button>
 
-      <img src={cancha.imagen} alt={cancha.nombre} className="detalle-image" />
+      <div className="detalle-hero">
+        <img src={cancha.imagenBanner} alt={cancha.nombre} className="detalle-image" />
+        <div className="detalle-hero-texto">
+          <h2>{cancha.nombre}</h2>
+          <span className="detalle-badge">{cancha.deporte}</span>
+        </div>
+      </div>
 
-      <h2>{cancha.nombre}</h2>
-      <p>{cancha.descripcion}</p>
+      <p className="detalle-descripcion">{cancha.descripcion}</p>
       <p>
         <strong>Deporte:</strong> {cancha.deporte}
       </p>
