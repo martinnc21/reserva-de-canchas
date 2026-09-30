@@ -42,7 +42,7 @@ function CanchaDetail({ cancha, reservas, onAgregar, onVolver }: CanchaDetailPro
     setFechaSeleccionada(null)
     setHoraSeleccionada(null)
   }
-  
+
   return (
     <aside className="detalle-panel">
       <button className="volver-button" onClick={onVolver}>
@@ -50,7 +50,12 @@ function CanchaDetail({ cancha, reservas, onAgregar, onVolver }: CanchaDetailPro
       </button>
 
       <div className="detalle-hero">
-        <img src={cancha.imagenBanner} alt={cancha.nombre} className="detalle-image" />
+        <img
+          src={cancha.imagenBanner}
+          alt={cancha.nombre}
+          className="detalle-image"
+          style={{ objectPosition: cancha.posicionBanner }}
+        />
         <div className="detalle-hero-texto">
           <h2>{cancha.nombre}</h2>
           <span className="detalle-badge">{cancha.deporte}</span>
@@ -58,15 +63,23 @@ function CanchaDetail({ cancha, reservas, onAgregar, onVolver }: CanchaDetailPro
       </div>
 
       <p className="detalle-descripcion">{cancha.descripcion}</p>
-      <p>
-        <strong>Deporte:</strong> {cancha.deporte}
-      </p>
-      <p>
-        <strong>Superficie:</strong> {cancha.superficie}
-      </p>
-      <p>
-        <strong>Precio:</strong> ${cancha.precioHora} por hora
-      </p>
+
+      <div className="ficha-tecnica">
+        <div className="ficha-dato">
+          <span className="ficha-dato-etiqueta">Superficie</span>
+          <span className="ficha-dato-valor">{cancha.superficie}</span>
+        </div>
+
+        <div className="ficha-dato">
+          <span className="ficha-dato-etiqueta">Precio por hora</span>
+          <span className="ficha-dato-valor">${cancha.precioHora}</span>
+        </div>
+
+        <div className="ficha-dato">
+          <span className="ficha-dato-etiqueta">Deporte</span>
+          <span className="ficha-dato-valor">{cancha.deporte}</span>
+        </div>
+      </div>
 
       <h3>Reservar tu cancha</h3>
 
@@ -113,7 +126,7 @@ function CanchaDetail({ cancha, reservas, onAgregar, onVolver }: CanchaDetailPro
                 <strong>Precio:</strong> ${cancha.precioHora}
               </p>
               <button className="primary-button" onClick={confirmarReserva}>
-               Añadir cancha
+                Añadir cancha
               </button>
             </div>
           )}
