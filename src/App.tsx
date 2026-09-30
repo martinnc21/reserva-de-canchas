@@ -66,11 +66,6 @@ function App() {
 
   return (
     <main className="app-shell">
-      <header className="app-header">
-        <p className="eyebrow">Reserva deportiva</p>
-        <h1>Reserva de Canchas</h1>
-      </header>
-
       <NavBar vistaActual={vista} onNavegar={setVista} cantidadReservas={carrito.length} />
 
       {vista === "inicio" && <Inicio onVerCanchas={() => setVista("canchas")} />}
