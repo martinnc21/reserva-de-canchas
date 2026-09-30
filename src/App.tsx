@@ -20,7 +20,7 @@ function App() {
   const [busqueda, setBusqueda] = useState("")
   const [canchaSeleccionada, setCanchaSeleccionada] = useState<Cancha | null>(null)
   const [cargando, setCargando] = useState(true)
-  const [vista, setVista] = useState<Vista>("inicio")
+  const [vista, setVista] = useState<Vista>("principal")
   const [carrito, setCarrito] = useState<Reserva[]>([])
   const [reservasConfirmadas, setReservasConfirmadas] = useState<Reserva[]>(() => obtenerReservas())
   const [pagoConfirmado, setPagoConfirmado] = useState(false)
@@ -50,7 +50,7 @@ function App() {
       fecha,
       hora,
     }
-  
+
     setCarrito((actuales) => [...actuales, nuevaReserva])
   }
 
@@ -64,50 +64,80 @@ function App() {
     setPagoConfirmado(true)
   }
 
+  const seleccionarCancha = (cancha: Cancha) => {
+    setCanchaSeleccionada(cancha)
+    window.scrollTo({ top: 0, behavior: "instant" })
+  }
+
+  const irAInicio = () => {
+    setCanchaSeleccionada(null)
+    setVista("principal")
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  const irACanchas = () => {
+    setCanchaSeleccionada(null)
+    setVista("principal")
+    setTimeout(() => {
+      document.getElementById("listado-canchas")?.scrollIntoView({ behavior: "smooth" })
+    }, 0)
+  }
+
   return (
     <main className="app-shell">
-      <NavBar vistaActual={vista} onNavegar={setVista} cantidadReservas={carrito.length} />
+      <NavBar
+        vistaActual={vista}
+        onInicio={irAInicio}
+        onCanchas={irACanchas}
+        onReservas={() => setVista("reservas")}
+        cantidadReservas={carrito.length}
+      />
 
-      {vista === "inicio" && <Inicio onVerCanchas={() => setVista("canchas")} />}
+{vista === "principal" && canchaSeleccionada && (
+        <CanchaDetail
+          cancha={canchaSeleccionada}
+          reservas={[...reservasConfirmadas, ...carrito]}
+          onAgregar={agregarReserva}
+          onVolver={() => {
+            setCanchaSeleccionada(null)
+            setTimeout(() => {
+              document.getElementById("listado-canchas")?.scrollIntoView({ behavior: "smooth" })
+            }, 0)
+          }}
+        />
+      )}
 
-      {vista === "canchas" && (
+      {vista === "principal" && !canchaSeleccionada && (
         <>
-          {canchaSeleccionada ? (
-            <CanchaDetail
-            cancha={canchaSeleccionada}
-            reservas={[...reservasConfirmadas, ...carrito]}
-            onAgregar={agregarReserva}
-            onVolver={() => setCanchaSeleccionada(null)}
-          />
-          ) : (
-            <>
-              <SearchBar valor={busqueda} onChange={setBusqueda} />
+          <Inicio onVerCanchas={irACanchas} />
 
-              {cargando ? (
-                <div className="estado">Cargando canchas...</div>
-              ) : canchasFiltradas.length === 0 ? (
-                <div className="estado">No encontramos canchas con esa búsqueda.</div>
-              ) : (
-                <CanchaList canchas={canchasFiltradas} onSelect={setCanchaSeleccionada} />
-              )}
-            </>
-          )}
+          <div id="listado-canchas">
+            <SearchBar valor={busqueda} onChange={setBusqueda} />
+
+            {cargando ? (
+              <div className="estado">Cargando canchas...</div>
+            ) : canchasFiltradas.length === 0 ? (
+              <div className="estado">No encontramos canchas con esa búsqueda.</div>
+            ) : (
+              <CanchaList canchas={canchasFiltradas} onSelect={seleccionarCancha} />
+            )}
+          </div>
         </>
       )}
 
       {vista === "reservas" && (
         <Reservas
-        reservas={carrito}
-        canchas={canchas}
-        pagoConfirmado={pagoConfirmado}
-        onEliminar={eliminarReserva}
-        onPagar={pagarReservas}
-        onSeguirReservando={() => {
-          setPagoConfirmado(false)
-          setVista("canchas")
-        }}
-      />
-            )}
+          reservas={carrito}
+          canchas={canchas}
+          pagoConfirmado={pagoConfirmado}
+          onEliminar={eliminarReserva}
+          onPagar={pagarReservas}
+          onSeguirReservando={() => {
+            setPagoConfirmado(false)
+            setVista("principal")
+          }}
+        />
+      )}
     </main>
   )
 }

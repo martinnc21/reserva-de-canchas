@@ -1,12 +1,14 @@
-type Vista = "inicio" | "canchas" | "reservas"
+type Vista = "principal" | "reservas"
 
 interface NavBarProps {
   vistaActual: Vista
-  onNavegar: (vista: Vista) => void
+  onInicio: () => void
+  onCanchas: () => void
+  onReservas: () => void
   cantidadReservas: number
 }
 
-function NavBar({ vistaActual, onNavegar, cantidadReservas }: NavBarProps) {
+function NavBar({ vistaActual, onInicio, onCanchas, onReservas, cantidadReservas }: NavBarProps) {
   return (
     <nav className="nav-bar">
       <span className="nav-logo">
@@ -20,22 +22,19 @@ function NavBar({ vistaActual, onNavegar, cantidadReservas }: NavBarProps) {
 
       <div className="nav-links">
         <button
-          className={vistaActual === "inicio" ? "nav-link activo" : "nav-link"}
-          onClick={() => onNavegar("inicio")}
+          className={vistaActual === "principal" ? "nav-link activo" : "nav-link"}
+          onClick={onInicio}
         >
           Inicio
         </button>
 
-        <button
-          className={vistaActual === "canchas" ? "nav-link activo" : "nav-link"}
-          onClick={() => onNavegar("canchas")}
-        >
+        <button className="nav-link" onClick={onCanchas}>
           Canchas
         </button>
 
         <button
           className={vistaActual === "reservas" ? "nav-link activo" : "nav-link"}
-          onClick={() => onNavegar("reservas")}
+          onClick={onReservas}
         >
           Reservas ({cantidadReservas})
         </button>
