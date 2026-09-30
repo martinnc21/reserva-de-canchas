@@ -453,3 +453,74 @@ h1 {
   text-align: center;
   padding: 60px 20px;
 }
+@media (max-width: 768px) {
+  .app-shell {
+    padding: 20px 14px 36px;
+  }
+
+  .nav-bar {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    margin: -20px -14px 20px;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .banner {
+    padding: 32px 20px;
+  }
+
+  .reserva-pasos {
+    grid-template-columns: 1fr;
+  }
+
+  .calendario-grid {
+    gap: 4px;
+  }
+
+  .calendario-dia {
+    padding: 8px 0;
+    font-size: 0.85rem;
+  }
+
+  .checkout-form {
+    grid-template-columns: 1fr;
+  }
+
+  .reserva-item {
+    grid-template-columns: 60px 1fr;
+    grid-template-areas:
+      "imagen info"
+      "imagen precio"
+      "imagen eliminar";
+    row-gap: 4px;
+  }
+
+  .reserva-item img {
+    grid-area: imagen;
+    width: 60px;
+    height: 100%;
+  }
+
+  .reserva-item-info {
+    grid-area: info;
+  }
+
+  .reserva-item-precio {
+    grid-area: precio;
+  }
+
+  .eliminar-button {
+    grid-area: eliminar;
+    justify-self: start;
+  }
+}
